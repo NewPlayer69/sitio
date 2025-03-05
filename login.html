@@ -1,0 +1,96 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Iniciar Sesión</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="homepage is-preload">
+    <div id="page-wrapper">
+        <!-- Header -->
+        <section id="header">
+            <!-- Logo -->
+            <h1><a href="index.html">Medicina Legal</a></h1>
+            <!-- Nav -->
+            <nav id="nav">
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="registro.html">Formulario Registro</a></li>
+                    <li><a href="entrega.html">Formulario Entrega</a></li>
+                    <li><a href="necropsia.html">Formulario Necropsia</a></li>
+                    <li class="current"><a href="login.html">Iniciar Sesión</a></li>
+                    <li><a href="logearse.html">Registrate</a></li>
+                </ul>
+            </nav>
+        </section>
+
+        <!-- Main -->
+        <section id="main">
+            <div class="container">
+                <h2>Iniciar Sesión</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="loginEmail" placeholder="Correo electrónico" required>
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="loginPassword" placeholder="Contraseña" required>
+                    </div>
+                    <button type="submit">Iniciar Sesión</button>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <!-- Scripts -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/main.js"></script>
+    <!-- <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            // Obtener usuarios registrados desde localStorage
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const user = users.find(u => u.email === email && u.password === password);
+
+            if (user) {
+                // Guardar el estado de la sesión en localStorage
+                localStorage.setItem('loggedInUser', JSON.stringify(user));
+                alert('Inicio de sesión exitoso');
+                window.location.href = 'index.html'; // Redirigir al inicio
+            } else {
+                alert('Correo electrónico o contraseña incorrectos');
+            }
+        });
+        
+    </script> -->
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+    
+            // Obtener usuarios registrados desde localStorage
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const user = users.find(u => u.email === email && u.password === password);
+    
+            if (user) {
+                // Guardar el estado de la sesión en localStorage
+                localStorage.setItem('loggedInUser', JSON.stringify(user));
+    
+                // Redirigir a la página solicitada o al inicio
+                const redirectUrl = localStorage.getItem('redirectUrl') || 'index.html';
+                localStorage.removeItem('redirectUrl'); // Limpiar la URL de redirección
+                window.location.href = redirectUrl;
+            } else {
+                alert('Correo electrónico o contraseña incorrectos');
+            }
+        });
+    </script>
+</body>
+</html>

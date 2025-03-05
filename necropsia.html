@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autorización para Necropsia - Morgue El Camino</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+    <div class="contenedor-formulario">
+        <!-- Botón de Atrás -->
+        <button class="boton-atras" onclick="window.location.href='index.html'">Atrás</button>
+
+        <h1>Autorización para Necropsia</h1>
+        <form id="formularioNecropsia">
+            <!-- Nombre del fallecido -->
+            <div class="campo">
+                <label for="nombreFallecidoNecropsia">Nombre del fallecido:</label>
+                <select id="nombreFallecidoNecropsia" name="nombreFallecidoNecropsia">
+                    <option value="">Seleccione un nombre</option>
+                </select>
+                <span class="mensaje-error" id="errorNombreFallecidoNecropsia"></span>
+            </div>
+
+            <!-- Nombre del solicitante -->
+            <div class="campo">
+                <label for="nombreSolicitante">Nombre del solicitante (familiar o autoridad):</label>
+                <input type="text" id="nombreSolicitante" name="nombreSolicitante">
+                <span class="mensaje-error" id="errorNombreSolicitante"></span>
+            </div>
+
+            <!-- Relación con el fallecido -->
+            <div class="campo">
+                <label for="relacionFallecido">Relación con el fallecido:</label>
+                <select id="relacionFallecido" name="relacionFallecido">
+                    <option value="">Seleccione una opción</option>
+                    <option value="Padre/Madre">Padre/Madre</option>
+                    <option value="Hijo/Hija">Hijo/Hija</option>
+                    <option value="Cónyuge">Cónyuge</option>
+                    <option value="Hermano/Hermana">Hermano/Hermana</option>
+                    <option value="Otro">Otro</option>
+                </select>
+                <span class="mensaje-error" id="errorRelacionFallecido"></span>
+            </div>
+
+            <!-- Motivo de la necropsia -->
+            <div class="campo">
+                <label for="motivoNecropsia">Motivo de la necropsia:</label>
+                <textarea id="motivoNecropsia" name="motivoNecropsia" rows="4"></textarea>
+                <span class="mensaje-error" id="errorMotivoNecropsia"></span>
+            </div>
+
+            <!-- Firma digital (checkbox de autorización) -->
+            <div class="campo">
+                <label for="autorizacion">
+                    <input type="checkbox" id="autorizacion" name="autorizacion">
+                    Autorizo la realización de la necropsia.
+                </label>
+                <span class="mensaje-error" id="errorAutorizacion"></span>
+            </div>
+
+            <!-- Botón de envío -->
+            <div class="campo">
+                <button type="submit">Enviar Autorización</button>
+            </div>
+        </form>
+
+        <!-- Mensaje de error general -->
+        <div id="mensajeErrorGeneral" class="mensaje-error-general"></div>
+    </div>
+
+    <script src="validaciones.js"></script>
+    <script>
+        // Verificar si el usuario ha iniciado sesión
+        const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+    
+        if (!loggedInUser) {
+            // Si no ha iniciado sesión, redirigir a login.html
+            window.location.href = 'login.html';
+        } else {
+            // Si ha iniciado sesión, mostrar "Cerrar Sesión" y ocultar "Iniciar Sesión"
+            document.getElementById('loginNavItem').style.display = 'none';
+            document.getElementById('logoutNavItem').style.display = 'block';
+        }
+    
+        // Manejar el cierre de sesión
+        document.getElementById('logoutLink').addEventListener('click', function(event) {
+            event.preventDefault();
+            localStorage.removeItem('loggedInUser'); // Eliminar el usuario de la sesión
+            window.location.href = 'index.html'; // Redirigir al inicio
+        });
+    </script>
+    <script>
+        // Cargar nombres de fallecidos desde localStorage
+        const nombresFallecidos = JSON.parse(localStorage.getItem('nombresFallecidos')) || [];
+        const selectNombre = document.getElementById('nombreFallecidoNecropsia');
+
+        // Llenar el listado desplegable con los nombres
+        nombresFallecidos.forEach(nombre => {
+            const option = document.createElement('option');
+            option.value = nombre;
+            option.textContent = nombre;
+            selectNombre.appendChild(option);
+        });
+    </script>
+</body>
+</html>

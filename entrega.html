@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrega de Cuerpo - Morgue El Camino</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+    <div class="contenedor-formulario">
+        <!-- Botón de Atrás -->
+        <button class="boton-atras" onclick="window.location.href='index.html'">Atrás</button>
+
+        <h1>Entrega de Cuerpo</h1>
+        <form id="formularioEntrega">
+            <!-- Nombre del fallecido -->
+            <div class="campo">
+                <label for="nombreFallecidoEntrega">Nombre del fallecido:</label>
+                <select id="nombreFallecidoEntrega" name="nombreFallecidoEntrega">
+                    <option value="">Seleccione un nombre</option>
+                </select>
+                <span class="mensaje-error" id="errorNombreFallecidoEntrega"></span>
+            </div>
+
+            <!-- Nombre del familiar o representante -->
+            <div class="campo">
+                <label for="nombreFamiliar">Nombre del familiar o representante:</label>
+                <input type="text" id="nombreFamiliar" name="nombreFamiliar">
+                <span class="mensaje-error" id="errorNombreFamiliar"></span>
+            </div>
+
+            <!-- Tipo de documento de identidad -->
+            <div class="campo">
+                <label for="tipoDocumento">Tipo de documento de identidad:</label>
+                <select id="tipoDocumento" name="tipoDocumento">
+                    <option value="DNI">DUI</option>
+                    <option value="Pasaporte">Pasaporte</option>
+                </select>
+                <span class="mensaje-error" id="errorTipoDocumento"></span>
+            </div>
+
+            <!-- Número de documento -->
+            <div class="campo">
+                <label for="numeroDocumento">Número de documento:</label>
+                <input type="text" id="numeroDocumento" name="numeroDocumento">
+                <span class="mensaje-error" id="errorNumeroDocumento"></span>
+            </div>
+
+            <!-- Nombre de la funeraria (opcional) -->
+            <div class="campo">
+                <label for="nombreFuneraria">Nombre de la funeraria (si aplica):</label>
+                <input type="text" id="nombreFuneraria" name="nombreFuneraria">
+                <span class="mensaje-error" id="errorNombreFuneraria"></span>
+            </div>
+
+            <!-- Fecha y hora de retiro -->
+            <div class="campo">
+                <label for="fechaRetiro">Fecha y hora de retiro:</label>
+                <input type="datetime-local" id="fechaRetiro" name="fechaRetiro">
+                <span class="mensaje-error" id="errorFechaRetiro"></span>
+            </div>
+
+            <!-- Botón de envío -->
+            <div class="campo">
+                <button type="submit">Registrar Entrega</button>
+            </div>
+        </form>
+
+        <!-- Mensaje de error general -->
+        <div id="mensajeErrorGeneral" class="mensaje-error-general"></div>
+    </div>
+
+    <script src="validaciones.js"></script>
+    <script>
+        // Verificar si el usuario ha iniciado sesión
+        const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+    
+        if (!loggedInUser) {
+            // Si no ha iniciado sesión, redirigir a login.html
+            window.location.href = 'login.html';
+        } else {
+            // Si ha iniciado sesión, mostrar "Cerrar Sesión" y ocultar "Iniciar Sesión"
+            document.getElementById('loginNavItem').style.display = 'none';
+            document.getElementById('logoutNavItem').style.display = 'block';
+        }
+    
+        // Manejar el cierre de sesión
+        document.getElementById('logoutLink').addEventListener('click', function(event) {
+            event.preventDefault();
+            localStorage.removeItem('loggedInUser'); // Eliminar el usuario de la sesión
+            window.location.href = 'index.html'; // Redirigir al inicio
+        });
+    </script>
+    <script>
+            // Cargar nombres de fallecidos desde localStorage
+        const nombresFallecidos = JSON.parse(localStorage.getItem('nombresFallecidos')) || [];
+        const selectNombre = document.getElementById('nombreFallecidoEntrega');
+
+        // Llenar el listado desplegable con los nombres
+        nombresFallecidos.forEach(nombre => {
+            const option = document.createElement('option');
+            option.value = nombre;
+            option.textContent = nombre;
+            selectNombre.appendChild(option);
+        });
+        document.getElementById('formularioEntrega').addEventListener('submit', function(event) {
+            const nombreFallecidoEntrega = document.getElementById('nombreFallecidoEntrega').value;
+
+            if (!nombreFallecidoEntrega) {
+                document.getElementById('errorNombreFallecidoEntrega').innerText = 'Debe seleccionar un nombre';
+                event.preventDefault(); // Prevenir el envío del formulario
+            } else {
+                document.getElementById('errorNombreFallecidoEntrega').innerText = '';
+            }
+        });
+    </script>
+</body>
+</html>

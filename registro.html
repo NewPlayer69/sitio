@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morgue El Camino - Registro</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+    <div class="contenedor-formulario">
+        <!-- Botón de Atrás -->
+        <button class="boton-atras" onclick="window.location.href='index.html'">Atrás</button>
+
+        <h1>Registro de Fallecido</h1>
+        <form id="formularioRegistro">
+            <!-- Nombre del fallecido -->
+            <div class="campo">
+                <label for="nombreFallecido">Nombre:</label>
+                <input type="text" id="nombreFallecido" name="nombreFallecido">
+                <span class="mensaje-error" id="errorNombre"></span>
+            </div>
+
+            <!-- Edad del fallecido -->
+            <div class="campo">
+                <label for="edadFallecido">Edad:</label>
+                <input type="number" id="edadFallecido" name="edadFallecido" min="0">
+                <span class="mensaje-error" id="errorEdad"></span>
+            </div>
+
+            <!-- Sexo del fallecido -->
+            <div class="campo">
+                <label for="sexoFallecido">Sexo:</label>
+                <select id="sexoFallecido" name="sexoFallecido">
+                    <option value="masculino">Masculino</option>
+                    <option value="femenino">Femenino</option>   
+                </select>
+                <span class="mensaje-error" id="errorSexo"></span>
+            </div>
+
+            <!-- Fecha y hora de defunción -->
+            <div class="campo">
+                <label for="fechaDefuncion">Fecha y hora de defunción:</label>
+                <input type="datetime-local" id="fechaDefuncion" name="fechaDefuncion">
+                <span class="mensaje-error" id="errorFecha"></span>
+            </div>
+
+            <!-- Causa de muerte -->
+            <div class="campo">
+                <label for="causaMuerte">Causa de muerte:</label>
+                <input type="text" id="causaMuerte" name="causaMuerte">
+                <span class="mensaje-error" id="errorCausa"></span>
+            </div>
+
+            <!-- Nombre del médico certificador -->
+            <div class="campo">
+                <label for="nombreMedico">Nombre del médico certificador:</label>
+                <input type="text" id="nombreMedico" name="nombreMedico">
+                <span class="mensaje-error" id="errorMedico"></span>
+            </div>
+
+            <!-- Observaciones -->
+            <div class="campo">
+                <label for="observaciones">Observaciones:</label>
+                <textarea id="observaciones" name="observaciones" rows="4"></textarea>
+                <span class="mensaje-error" id="errorObservaciones"></span>
+            </div>
+
+            <!-- Botón de envío -->
+            <div class="campo">
+                <button type="submit">Registrar</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+    document.getElementById('formularioRegistro').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const nombreFallecido = document.getElementById('nombreFallecido').value;
+
+        // Obtener la lista actual de nombres de fallecidos
+        let nombresFallecidos = JSON.parse(localStorage.getItem('nombresFallecidos')) || [];
+
+        // Agregar el nuevo nombre si no existe
+        if (!nombresFallecidos.includes(nombreFallecido)) {
+            nombresFallecidos.push(nombreFallecido);
+            localStorage.setItem('nombresFallecidos', JSON.stringify(nombresFallecidos));
+        }
+    });
+        // Validar edad
+        const edadFallecido = document.getElementById('edadFallecido').value;
+            if (edadFallecido === '' || edadFallecido < 0) {
+                document.getElementById('errorEdad').innerText = 'La edad no puede ser negativa';
+                valid = false;
+            } else {
+                document.getElementById('errorEdad').innerText = '';
+            }
+
+            // Validar sexo
+            const sexoFallecido = document.getElementById('sexoFallecido').value;
+            if (sexoFallecido === '') {
+                document.getElementById('errorSexo').innerText = 'El sexo es obligatorio';
+                valid = false;
+            } else {
+                document.getElementById('errorSexo').innerText = '';
+            }
+    </script>
+
+    <script src="validaciones.js"></script>
+    <script>
+        // Verificar si el usuario ha iniciado sesión
+        const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+    
+        if (!loggedInUser) {
+            // Si no ha iniciado sesión, redirigir a login.html
+            window.location.href = 'login.html';
+        } else {
+            // Si ha iniciado sesión, mostrar "Cerrar Sesión" y ocultar "Iniciar Sesión"
+            document.getElementById('loginNavItem').style.display = 'none';
+            document.getElementById('logoutNavItem').style.display = 'block';
+        }
+    
+        // Manejar el cierre de sesión
+        document.getElementById('logoutLink').addEventListener('click', function(event) {
+            event.preventDefault();
+            localStorage.removeItem('loggedInUser'); // Eliminar el usuario de la sesión
+            window.location.href = 'index.html'; // Redirigir al inicio
+        });
+    </script>
+</body>
+</html>
